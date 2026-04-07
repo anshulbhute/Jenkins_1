@@ -6,6 +6,13 @@ pipeline {
     }
 
     stages {
+
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/anshulbhute/Jenkins_1.git'
+            }
+        }
+
         stage('Build') {
             steps {
                 bat 'mvn clean compile'
@@ -21,12 +28,12 @@ pipeline {
         stage('Report') {
             steps {
                 publishHTML([
-                    reportDir: 'reports',
-                    reportFiles: 'extent-report.html',
+                    reportDir: 'target',   // ✅ FIXED
+                    reportFiles: 'cucumber-report.html', // or index.html
                     reportName: 'Test Report',
                     keepAll: true,
                     alwaysLinkToLastBuild: true,
-                    allowMissing: true   // ✅ IMPORTANT
+                    allowMissing: true
                 ])
             }
         }
